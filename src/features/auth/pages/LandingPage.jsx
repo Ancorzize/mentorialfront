@@ -282,16 +282,16 @@ const LandingPage = ({ onLoginClick }) => {
                             </p>
                             <div className="bg-purple-700 text-white p-4 rounded-lg mb-6 shadow-md">
                                 <h3 className="text-2xl font-bold">
-                                    Precio por Paquete: **$39.900 COP**
+                                    Precio por Paquete: **$25.000 COP**
                                 </h3>
-                                <p className="text-sm mt-1">¡**Promoción válida hasta el 29 de septiembre**!</p>
+                                <p className="text-sm mt-1">¡**Promoción por tiempo limitado o hasta agotar cupos**!</p>
                             </div>
                             
                             <h4 className="text-lg font-semibold text-white mb-4">Métodos de Pago:</h4>
                             <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-8 mb-6">
                                 <div className="bg-gray-800 p-4 rounded-lg flex-1">
                                     <h5 className="font-bold text-purple-400 mb-1">Nequi</h5>
-                                    <p className="text-white">**3147888224**</p>
+                                    <p className="text-white">**3115108204**</p>
                                 </div>
                                 <div className="bg-gray-800 p-4 rounded-lg flex-1">
                                     <h5 className="font-bold text-purple-400 mb-1">Bancolombia Ahorros</h5>
