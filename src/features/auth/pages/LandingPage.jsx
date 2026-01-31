@@ -64,6 +64,7 @@ const LandingPage = ({ onLoginClick }) => {
                         <span>
                             <span className="text-purple-600">M</span>
                             <span className="text-white">entorial</span>
+                            <span className="text-purple-600">PRO</span>
                         </span>
                     </a>
 
@@ -216,7 +217,7 @@ const LandingPage = ({ onLoginClick }) => {
                         <div className="max-w-4xl mx-auto text-center md:text-left">
                             <h3 className="text-2xl font-bold text-white mb-4">Tu Futuro Profesional Comienza Aquí.</h3>
                             <p className="text-gray-400 leading-relaxed mb-6">
-                                En Mentorial, te ayudamos a prepararte para los concursos de mérito con una metodología que va más allá de la memorización. Nuestra app con 600 preguntas, disponible en versión web y móvil, te permite estudiar las pruebas de manera efectiva.
+                                En MentorialPRO, te ayudamos a prepararte para los concursos de mérito con una metodología que va más allá de la memorización. Nuestra app con 600 preguntas, disponible en versión web y móvil, te permite estudiar las pruebas de manera efectiva.
                             </p>
                             <p className="text-lg font-semibold text-purple-400 mb-2">¿Cómo Funciona?</p>
                             <ul className="list-disc list-inside space-y-4 text-gray-400">
@@ -230,7 +231,7 @@ const LandingPage = ({ onLoginClick }) => {
                                     <span className="font-bold text-white">Análisis de la Respuesta Correcta:</span> Lo más importante es el análisis. Después de cada pregunta, la aplicación te muestra la respuesta correcta y una explicación detallada de por qué esa es la opción adecuada. Este paso es fundamental para que no solo memorices, sino que realmente comprendas los temas.
                                 </li>
                                 <li>
-                                    <span className="font-bold text-white">Acceso Flexible:</span> Nuestra aplicación está diseñada para que estudies en cualquier momento y lugar. Ya sea desde la comodidad de tu casa en la versión web o en tus trayectos diarios con la aplicación móvil, Mentorial se adapta a tu ritmo de vida.
+                                    <span className="font-bold text-white">Acceso Flexible:</span> Nuestra aplicación está diseñada para que estudies en cualquier momento y lugar. Ya sea desde la comodidad de tu casa en la versión web o en tus trayectos diarios con la aplicación móvil, MentorialPRO se adapta a tu ritmo de vida.
                                 </li>
                                 <li>
                                     <span className="font-bold text-white">Práctica Ilimitada:</span> Una vez que adquieres un paquete, tienes acceso a simulacros que puedes repetir infinitas veces. Esta práctica constante te ayuda a dominar el temario y a reducir la ansiedad frente a la prueba real.
@@ -278,7 +279,7 @@ const LandingPage = ({ onLoginClick }) => {
                         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Planes y Métodos de Pago</h2>
                         <div className="bg-dark-card rounded-lg shadow-lg p-8 md:p-10 border border-gray-700 max-w-2xl mx-auto">
                             <p className="text-lg md:text-xl text-gray-400 mb-6">
-                                Con Mentorial, obtienes acceso ilimitado a nuestros simulacros de alta calidad.
+                                Con MentorialPRO, obtienes acceso ilimitado a nuestros simulacros de alta calidad.
                             </p>
                             <div className="bg-purple-700 text-white p-4 rounded-lg mb-6 shadow-md">
                                 <h3 className="text-2xl font-bold">
@@ -403,7 +404,7 @@ const LandingPage = ({ onLoginClick }) => {
                         <a href="https://www.facebook.com/profile.php?id=61581187410299" className="hover:text-purple-500"><Facebook /></a>
                         <a href="#" className="hover:text-purple-500"><Instagram /></a>
                     </div>
-                    <p className="text-gray-500">&copy; 2025 Mentorial. Todos los derechos reservados.</p>
+                    <p className="text-gray-500">&copy; 2025 MentorialPRO. Todos los derechos reservados.</p>
                 </div>
             </footer>
         </div>

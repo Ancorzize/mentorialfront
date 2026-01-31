@@ -37,7 +37,7 @@ const HomePage = ({ user, onLogout, onConvocatoriaSelect }) => {
         return (
             <>
                 <div className="w-full max-w-2xl text-center mb-6 md:mb-8">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Prepárate con Mentorial</h2>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Prepárate con MentorialPRO</h2>
                     <p className="text-gray-400 text-sm sm:text-base">Busca y encuentra las convocatorias de tu interés.</p>
                 </div>
                 <form className="w-full max-w-2xl mb-6 md:mb-8 flex flex-col sm:flex-row gap-2 sm:items-end" onSubmit={handleSubmit}>
