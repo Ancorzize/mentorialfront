@@ -1,4 +1,4 @@
-package com.example.app;
+package www.mentorial.pro;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -62,8 +62,8 @@ const LandingPage = ({ onLoginClick }) => {
                     {/* Logo */}
                     <a href="#" className="flex items-center space-x-2 text-2xl font-bold text-white">
                         <span>
-                            <span className="text-purple-600">M</span>
-                            <span className="text-white">entorial</span>
+                           
+                            <span className="text-white">Mentorial</span>
                             <span className="text-purple-600">PRO</span>
                         </span>
                     </a>

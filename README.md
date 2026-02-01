@@ -1,6 +1,7 @@
 # React + Vite
 
-VITE_API_URL=https://backcursos.onrender.com
+VITE_API_URL=https://exam-o16q.onrender.com
+VITE_API_URL=http://localhost:8085/cursosback/public
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

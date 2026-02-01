@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
-  appName: 'Mentorialpro',
+  appId: 'www.mentorial.pro',
+  appName: 'mentorialpro',
   webDir: 'dist'
 };
 
