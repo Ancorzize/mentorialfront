@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import preguntaService from '../../../api/preguntaService'; 
 
-const useQuestions = (convocatoriaId, userId, initialLastQuestionId) => {
+const useQuestions = (convocatoriaId, userId, initialLastQuestionId, moduloId) => {
     
     const [questionsData, setQuestionsData] = useState(null);
     const [lastQuestionId, setLastQuestionId] = useState(initialLastQuestionId);
@@ -16,8 +16,8 @@ const useQuestions = (convocatoriaId, userId, initialLastQuestionId) => {
         setError(null);
         
         try {
-         
-            const data = await preguntaService.getQuestions(convocatoriaId, userId, lastQuestionId);
+         console.log('datos: '); console.log(moduloId);
+            const data = await preguntaService.getQuestions(convocatoriaId, userId, lastQuestionId, moduloId);
 
             if (data?.data && Array.isArray(data.data.data) && data.data.data.length > 0) {
           

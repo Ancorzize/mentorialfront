@@ -1,13 +1,14 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL
 
 const preguntaService = {
-  getQuestions: async (convocatoriaId, userId, lastQuestionId) => {
+  getQuestions: async (convocatoriaId, userId, lastQuestionId, moduloId) => {
     try {
       const id_ultima_pregunta = lastQuestionId ?? 0;
       const queryParams = new URLSearchParams({
         id_convocatoria: convocatoriaId,
         id_usuario: userId,
-        id_ultima_pregunta: id_ultima_pregunta
+        id_ultima_pregunta: id_ultima_pregunta,
+        id_modulo: moduloId
       }).toString();
 
      const response = await fetch(`${API_BASE_URL}/api/preguntas?${queryParams}`, {

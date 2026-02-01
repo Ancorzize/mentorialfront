@@ -7,7 +7,7 @@ import preguntaService from '../../../api/preguntaService';
 
 const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack }) => {
     
-    const { questionsData, isLoading, error, hasMoreQuestions, getQuestions } = useQuestions(selectedConvocatoria?.id, user?.id, selectedConvocatoria?.ultima_pregunta);
+    const { questionsData, isLoading, error, hasMoreQuestions, getQuestions } = useQuestions(selectedConvocatoria?.id, user?.id, selectedConvocatoria?.ultima_pregunta, selectedConvocatoria?.moduloId);
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const [verificationStatus, setVerificationStatus] = useState({});
     const [isVerified, setIsVerified] = useState(false);

@@ -25,6 +25,24 @@ const convocatoriaService = {
       return [];
     }
   },
+   getModulosByConvocatoria: async (convocatoriaId) => {
+    try {
+      const queryParams = new URLSearchParams({
+        id_convocatoria: convocatoriaId,
+      }).toString();
+
+      const response = await fetch(`${API_BASE_URL}/api/modulosbyconvocatoria?${queryParams}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!response.ok) throw new Error('Error al cargar módulos.');
+      return await response.json(); // esperado: array
+    } catch (error) {
+      console.error('getModulosByConvocatoria error:', error);
+      return [];
+    }
+  }
 };
 
 export default convocatoriaService;
