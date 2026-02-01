@@ -82,7 +82,7 @@ const LandingPage = ({ onLoginClick }) => {
                     {/* Botones (Escritorio) */}
                     <div className="hidden md:flex items-center space-x-4">
                         <a 
-                            href="https://github.com/ancorzize0250/MentorialAPP/releases/download/v1.0/mentorial.apk" 
+                            href="https://github.com/ancorzize0250/MentorialAPKAndroid/releases/download/v1.0/mentorial.apk" 
                             download 
                             className="flex items-center space-x-2 bg-purple-700 text-white px-5 py-2.5 rounded-lg font-semibold 
                                      hover:bg-purple-800 transition-transform hover:scale-105 shadow-lg shadow-purple-500/40"
@@ -118,7 +118,7 @@ const LandingPage = ({ onLoginClick }) => {
                         <li className="w-full">
                             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 w-full">
                                 <a 
-                                    href="https://github.com/ancorzize0250/MentorialAPP/releases/download/v1.0/mentorial.apk" 
+                                    href="https://github.com/ancorzize0250/MentorialAPKAndroid/releases/download/v1.0/mentorial.apk" 
                                     className="flex items-center justify-center space-x-2 bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold 
                                              hover:bg-purple-800 transition-transform hover:scale-105 shadow-lg shadow-purple-500/40 w-full text-center"
                                 >
@@ -160,7 +160,7 @@ const LandingPage = ({ onLoginClick }) => {
                                 Explorar Simulacros
                             </button>
                             <a 
-                                href="https://github.com/ancorzize0250/MentorialAPP/releases/download/v1.0/mentorial.apk" 
+                                href="https://github.com/ancorzize0250/MentorialAPKAndroid/releases/download/v1.0/mentorial.apk" 
                                 className="bg-dark-card text-white px-8 py-4 rounded-lg font-semibold 
                                          hover:bg-gray-700 transition-transform hover:scale-105 
                                          w-full sm:w-auto flex items-center justify-center gap-2"
