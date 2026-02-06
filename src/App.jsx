@@ -8,7 +8,7 @@ import { useState } from "react";
 const App = () => {
     const [user, setUser] = useState(null);
     const [selectedConvocatoria, setSelectedConvocatoria] = useState(null);
-    const [currentPage, setCurrentPage] = useState('login'); // Inicio de la apk es login, para web es landing
+    const [currentPage, setCurrentPage] = useState('landing'); // Inicio de la apk es login, para web es landing
     const [successMessage, setSuccessMessage] = useState(null);
 
     const handleLoginSuccess = (userData) => {
@@ -19,7 +19,7 @@ const App = () => {
 
     const handleLogout = () => {
         setUser(null);
-        setCurrentPage('login'); // Al cerrar sesión, regresa a la página de inicio  landing  o login
+        setCurrentPage('landing'); // Al cerrar sesión, regresa a la página de inicio  landing  o login
         setSelectedConvocatoria(null);
         setSuccessMessage(null);
     };
