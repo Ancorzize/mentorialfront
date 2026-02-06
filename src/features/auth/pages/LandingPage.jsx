@@ -283,7 +283,7 @@ const LandingPage = ({ onLoginClick }) => {
                             </p>
                             <div className="bg-purple-700 text-white p-4 rounded-lg mb-6 shadow-md">
                                 <h3 className="text-2xl font-bold">
-                                    Precio por Paquete: **$25.000 COP**
+                                    Precio por Paquete desde: **$25.000 COP**
                                 </h3>
                                 <p className="text-sm mt-1">¡**Promoción por tiempo limitado o hasta agotar cupos**!</p>
                             </div>

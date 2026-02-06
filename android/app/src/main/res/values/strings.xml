@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">MentorialPro</string>
-    <string name="title_activity_main">MentorialPro</string>
+    <string name="app_name">MentorialPRO</string>
+    <string name="title_activity_main">MentorialPRO</string>
     <string name="package_name">www.mentorial.pro</string>
     <string name="custom_url_scheme">www.mentorial.pro</string>
 </resources>
