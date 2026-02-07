@@ -90,7 +90,7 @@ const LandingPage = ({ onLoginClick }) => {
                             <DownloadCloud />
                             <span>Descargar App</span>
                         </a>
-                        <a href="https://wa.me/3115108204" className="flex items-center space-x-2 bg-[#25D366] text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-[#20b85a] transition-transform hover:scale-105" aria-label="Contactar por WhatsApp">
+                        <a href="https://wa.me/3013587610" className="flex items-center space-x-2 bg-[#25D366] text-white px-5 py-2.5 rounded-lg font-semibold hover:bg-[#20b85a] transition-transform hover:scale-105" aria-label="Contactar por WhatsApp">
                             <FaWhatsapp size={20} />
                             <span>WhatsApp</span>
                         </a>
@@ -127,7 +127,7 @@ const LandingPage = ({ onLoginClick }) => {
                                 </a>
                                 
                                 <a 
-                                    href="https://wa.me/3115108204" 
+                                    href="https://wa.me/3013587610" 
                                     className="flex items-center justify-center space-x-2 bg-[#25D366] text-white px-6 py-3 rounded-lg font-semibold 
                                              hover:bg-[#20b85a] transition-transform hover:scale-105 w-full text-center" 
                                     aria-label="Contactar por WhatsApp"
@@ -308,7 +308,7 @@ const LandingPage = ({ onLoginClick }) => {
                                 Una vez realizado el pago, por favor envía la confirmación de la transacción a nuestro WhatsApp para la activación de tu cuenta.
                             </p>
                             
-                            <a href="https://wa.me/3115108204" className="bg-[#25D366] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#20b85a] transition-colors flex items-center justify-center space-x-2 w-full md:w-auto mx-auto shadow-lg">
+                            <a href="https://wa.me/3013587610" className="bg-[#25D366] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#20b85a] transition-colors flex items-center justify-center space-x-2 w-full md:w-auto mx-auto shadow-lg">
                                 <FaWhatsapp size={20} />
                                 <span>Activar mi Cuenta (WhatsApp)</span>
                             </a>
