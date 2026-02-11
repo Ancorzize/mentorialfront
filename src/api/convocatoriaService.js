@@ -25,10 +25,11 @@ const convocatoriaService = {
       return [];
     }
   },
-   getModulosByConvocatoria: async (convocatoriaId) => {
+   getModulosByConvocatoria: async (convocatoriaId, userId) => {
     try {
       const queryParams = new URLSearchParams({
         id_convocatoria: convocatoriaId,
+        id_usuario: userId,
       }).toString();
 
       const response = await fetch(`${API_BASE_URL}/api/modulosbyconvocatoria?${queryParams}`, {

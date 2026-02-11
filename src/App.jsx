@@ -25,8 +25,6 @@ const App = () => {
     };
 
     const handleConvocatoriaSelect = (convocatoriaData) => {
-        console.log('paso');
-        console.log(convocatoriaData);
         setSelectedConvocatoria(convocatoriaData);
         setCurrentPage('questions');
     };

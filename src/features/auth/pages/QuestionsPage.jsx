@@ -61,13 +61,17 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
             setValidationMessage("Por favor, responde a todas las preguntas antes de continuar.");
             return;
         }
-
+            
         // 1. Preparar datos para la solicitud POST
         const answersToSubmit = [];
         questionsArray.forEach(item => {
+          
+            const  idmodulo = item.modulo.id_modulo;
             item.preguntas.forEach(preguntaItem => {
                 const questionId = preguntaItem.pregunta.id_pregunta;
                 const selectedOption = selectedAnswers[questionId];
+                
+           
                 if (selectedOption) {
                     const isCorrect = selectedOption.correcta;
                     answersToSubmit.push({
@@ -75,7 +79,8 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
                         id_usuario: user.id,
                         opcion: selectedOption.opcion,
                         descripcion_opcion: selectedOption.descripcion_opcion,
-                        correcta: isCorrect
+                        correcta: isCorrect,
+                        id_modulo: idmodulo
                     });
                 }
             });

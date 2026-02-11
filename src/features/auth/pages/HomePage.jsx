@@ -33,15 +33,14 @@ const HomePage = ({ user, onLogout, onConvocatoriaSelect }) => {
     setSelectedConvocatoria({
       id: convocatoria.id,
       nombre: convocatoria.nombre,
-      codigo: convocatoria.codigo,
-      ultima_pregunta: convocatoria.ultima_pregunta
+      codigo: convocatoria.codigo
     });
 
     setIsLoadingModulos(true);
     setModulos([]);
     setModulosMessage('');
 
-    const data = await convocatoriaService.getModulosByConvocatoria(convocatoria.id);
+    const data = await convocatoriaService.getModulosByConvocatoria(convocatoria.id, user.id);
 
     if (!data || data.length === 0) {
       setModulosMessage('Esta convocatoria no tiene módulos disponibles.');
@@ -58,7 +57,7 @@ const HomePage = ({ user, onLogout, onConvocatoriaSelect }) => {
     onConvocatoriaSelect({
       id: selectedConvocatoria.id,
       nombre: selectedConvocatoria.nombre,
-      ultima_pregunta: selectedConvocatoria.ultima_pregunta,
+      ultima_pregunta: modulo.ultima_pregunta ?? 0,
       moduloId: modulo.id,
       moduloNombre: modulo.nombre
     });
