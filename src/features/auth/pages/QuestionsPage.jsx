@@ -1,109 +1,171 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Button from '../../../components/Button';
 import useQuestions from '../hooks/useQuestions';
-import ConfirmationModal from '../../../components/ConfirmationModal';
 import preguntaService from '../../../api/preguntaService'; 
-
+import { Capacitor } from '@capacitor/core';
 
 const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack }) => {
     
     const { questionsData, isLoading, error, hasMoreQuestions, getQuestions } = useQuestions(selectedConvocatoria?.id, user?.id, selectedConvocatoria?.ultima_pregunta, selectedConvocatoria?.moduloId);
     const [selectedAnswers, setSelectedAnswers] = useState({});
-    const [verificationStatus, setVerificationStatus] = useState({});
-    const [isVerified, setIsVerified] = useState(false);
     const [apiErrorMessage, setApiErrorMessage] = useState(null);
     const [validationMessage, setValidationMessage] = useState(null);
-
+    const [isApp, setIsApp] = useState(false);
     const questionsArray = questionsData?.data || [];
-    const totalQuestions = questionsArray.reduce((count, item) => count + item.preguntas.length, 0);
-    const allQuestionsAnswered = Object.keys(selectedAnswers).length === totalQuestions;
-
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [checked, setChecked] = useState(false);
+    const [lastCheckResult, setLastCheckResult] = useState(null);
+    const [totalAnsweredGlobal, setTotalAnsweredGlobal] = useState(0);
 
     const handleAnswerChange = (questionKey, option) => {
-        if (!isVerified) {
-            setSelectedAnswers({
-                ...selectedAnswers,
-                [questionKey]: option,
-            });
-        }
+        if (checked) return;
+
+        setSelectedAnswers(prev => ({
+            ...prev,
+            [questionKey]: option,
+        }));
     };
 
-    const handleVerifyClick = () => {
-        const results = {};
-        questionsArray.forEach(item => {
-            item.preguntas.forEach(preguntaItem => {
-                const questionKey = preguntaItem.pregunta.id_pregunta;
-                const selectedOption = selectedAnswers[questionKey];
-                if (selectedOption) {
-                    results[questionKey] = selectedOption.correcta;
-                } else {
-                    results[questionKey] = false;
-                }
-            });
-        });
-        setVerificationStatus(results);
-        setIsVerified(true);
-    };
-
-    const handleRetryClick = () => {
+    useEffect(() => {
+        const native = Capacitor.isNativePlatform();
+        console.log("¿Es app nativa?", native);
+        setIsApp(native);
+    }, []);
+    useEffect(() => {
         setSelectedAnswers({});
-        setVerificationStatus({});
-        setIsVerified(false);
+        setCurrentIndex(0);
+        setChecked(false);
+        setLastCheckResult(null);
         setApiErrorMessage(null);
         setValidationMessage(null);
+    }, [selectedConvocatoria?.id, selectedConvocatoria?.moduloId]);
+
+    const flatQuestions = useMemo(() => {
+        return (questionsArray || []).flatMap((item) => {
+            const idModulo = item?.modulo?.id_modulo;
+            const encabezado = item?.encabezado?.encabezado;
+
+            return (item?.preguntas || []).map((preguntaItem) => ({
+            idModulo,
+            encabezado,
+            pregunta: preguntaItem.pregunta,   // {id_pregunta, pregunta}
+            opciones: preguntaItem.opciones    // [{opcion, descripcion_opcion, correcta}]
+            }));
+        });
+    }, [questionsArray]);
+
+     const buildSummary = () => {
+        return flatQuestions.map((q) => {
+            const qid = q.pregunta.id_pregunta;
+            const selected = selectedAnswers[qid];
+            const correct = q.opciones.find(o => o.correcta === true);
+
+            return {
+            id_pregunta: qid,
+            idModulo: q.idModulo,
+            pregunta: q.pregunta.pregunta,
+            encabezado: q.encabezado,
+            selected,
+            correct,
+            opciones: q.opciones
+            };
+        });
     };
 
-    const handleLoadNextQuestions = async () => {
-        setApiErrorMessage(null); // Clear any previous error message
-        setValidationMessage(null);
+    const current = flatQuestions[currentIndex];
+    const totalLoaded = flatQuestions.length;
+    const isLast = currentIndex === totalLoaded - 1;
+    const currentQuestionId = current?.pregunta?.id_pregunta;
+    const selectedOption = currentQuestionId ? selectedAnswers[currentQuestionId] : null;
+    const hasSelected = Boolean(selectedOption);
 
-        if (!allQuestionsAnswered) {
-            setValidationMessage("Por favor, responde a todas las preguntas antes de continuar.");
+    const isCurrentAnswered = currentQuestionId
+    ? Boolean(selectedAnswers[currentQuestionId])
+    : false;
+
+    const progress = totalLoaded > 0 ? Math.round(((currentIndex + 1) / totalLoaded) * 100) : 0
+
+    const handleCheck = () => {
+        if (!hasSelected) {
+            setValidationMessage("Selecciona una opción para comprobar.");
             return;
         }
-            
-        // 1. Preparar datos para la solicitud POST
-        const answersToSubmit = [];
-        questionsArray.forEach(item => {
-          
-            const  idmodulo = item.modulo.id_modulo;
-            item.preguntas.forEach(preguntaItem => {
-                const questionId = preguntaItem.pregunta.id_pregunta;
-                const selectedOption = selectedAnswers[questionId];
-                
-           
-                if (selectedOption) {
-                    const isCorrect = selectedOption.correcta;
-                    answersToSubmit.push({
-                        id_pregunta: questionId,
-                        id_usuario: user.id,
-                        opcion: selectedOption.opcion,
-                        descripcion_opcion: selectedOption.descripcion_opcion,
-                        correcta: isCorrect,
-                        id_modulo: idmodulo
-                    });
-                }
-            });
-        });
 
-        // 2. Enviar respuestas solo si hay respuestas para enviar
-        if (answersToSubmit.length > 0) {
-        
-            const result = await preguntaService.submitAnswers(answersToSubmit);
-
-            if (result.success) {
-                // Si es exitoso, carga las siguientes preguntas y resetea el estado
-                getQuestions(true);
-                setSelectedAnswers({});
-                setVerificationStatus({});
-                setIsVerified(false);
-            } else {
-                // Si falla, muestra el mensaje de error de la API
-                console.error("Error al enviar las respuestas:", result.message);
-                setApiErrorMessage(result.message);
-            }
-        }
+        setValidationMessage(null);
+        setChecked(true);
+        setLastCheckResult(Boolean(selectedOption.correcta)); // true si es correcta
     };
+
+   const handleContinue = async () => {
+        setValidationMessage(null);
+        setApiErrorMessage(null);
+
+        if (!hasSelected) {
+            setValidationMessage("Selecciona una opción para continuar.");
+            return;
+        }
+
+        if (isLast) {
+            await finishBlock();
+            return;
+        }
+        
+        setCurrentIndex(prev => prev + 1);
+        setChecked(false);
+        setLastCheckResult(null);
+    };
+
+    const handlePrev = () => {
+        setChecked(false);
+        setLastCheckResult(null);
+        
+        setValidationMessage(null);
+        if (currentIndex > 0) setCurrentIndex((prev) => prev - 1);
+    };
+
+    const finishBlock = async () => {
+        setApiErrorMessage(null);
+        setValidationMessage(null);
+
+        const summary = buildSummary();
+
+        const answersToSubmit = summary
+            .filter(x => x.selected)
+            .map(x => ({
+            id_pregunta: x.id_pregunta,
+            id_usuario: user.id,
+            opcion: x.selected.opcion,
+            descripcion_opcion: x.selected.descripcion_opcion,
+            correcta: x.selected.correcta,
+            id_modulo: x.idModulo
+            }));
+
+        if (answersToSubmit.length === 0) {
+            setValidationMessage("No hay respuestas para enviar.");
+            return;
+        }
+   
+        const result = await preguntaService.submitAnswers(answersToSubmit);
+
+        if (!result.success) {
+            setApiErrorMessage(result.message);
+            return;
+        }
+
+        // ✅ Progreso global (usa lo que realmente enviaste)
+        setTotalAnsweredGlobal(prev => prev + answersToSubmit.length);
+
+        // ✅ continuar normal: cargar siguiente bloque
+        getQuestions(true);
+
+        // ✅ reset UI
+        setSelectedAnswers({});
+        setCurrentIndex(0);
+        setChecked(false);
+        setLastCheckResult(null);
+        };
+
+
 
     return (
         <div className="min-h-screen bg-gray-950 flex flex-col items-center p-2 text-white"> {/* p-2 para reducir el padding general */}
@@ -142,68 +204,163 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
 
                 {questionsData && (
                     <>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-2">{questionsData?.convocatoria?.nombre}</h2>
-                        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-center text-purple-400 mb-4 md:mb-6">{questionsData?.modulo?.nombre}</h3>
+                    {!isApp && (
+                    <>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-2">
+                            {questionsData?.convocatoria?.nombre}
+                        </h2>
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-center text-purple-400 mb-4 md:mb-6">
+                            {questionsData?.modulo?.nombre}
+                        </h3>
+                    </>
+                )}
+                    {current ? (
+                        <div className="bg-gray-900 rounded-2xl p-4 md:p-6 shadow-lg border border-gray-800">
 
-                        {/* MODIFICACIÓN: Se añade la condición `hasMoreQuestions` para renderizar las preguntas */}
-                        {hasMoreQuestions && questionsArray.length > 0 ? (
-                            questionsArray.map((item, index) => (
-                                <div key={index} className="mb-5 p-3 md:p-4 bg-gray-800 rounded-lg"> {/* p-3 y mb-5 para reducir espacios */}
-                                    <p className="font-bold text-base sm:text-lg mb-3 text-gray-300">{item.encabezado.encabezado}</p> {/* mb-3 */}
+                            {/* Header: Pregunta X de N + % */}
+                            <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
+                            <span className="tracking-widest uppercase">
+                                Pregunta {currentIndex + 1} de {totalLoaded}
+                            </span>
+                            <span className="font-semibold">{progress}%</span>
+                            </div>
 
-                                    <div className="space-y-3"> {/* space-y-3 para opciones más cercanas */}
-                                        {item.preguntas.map((preguntaItem, preguntaIndex) => {
-                                            const questionKey = preguntaItem.pregunta.id_pregunta;
+                            {/* Progress bar */}
+                            <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden mb-6">
+                            <div className="h-full bg-purple-600" style={{ width: `${progress}%` }} />
+                            </div>
 
-                                            return (
-                                                <div key={preguntaIndex} className="bg-gray-700 p-3 md:p-4 rounded-lg"> {/* p-3 para cada pregunta */}
-                                                    <p className="text-base sm:text-lg font-bold text-white mb-2">
-                                                        {preguntaItem.pregunta.pregunta}
-                                                    </p>
-                                                    <div className="space-y-2">
-                                                        {preguntaItem.opciones.map((opcion, i) => (
-                                                            <div key={i} className="flex items-center space-x-2">
-                                                                <input
-                                                                    type="radio"
-                                                                    id={`opcion-${questionKey}-${i}`}
-                                                                    name={`pregunta-${questionKey}`}
-                                                                    value={opcion.opcion}
-                                                                    checked={selectedAnswers[questionKey]?.opcion === opcion.opcion}
-                                                                    onChange={() => handleAnswerChange(questionKey, opcion)}
-                                                                    className="form-radio text-purple-600"
-                                                                />
-                                                                <label
-                                                                    htmlFor={`opcion-${questionKey}-${i}`}
-                                                                    className="text-gray-300 text-sm sm:text-base flex-grow" // flex-grow para que la label ocupe el espacio
-                                                                >
-                                                                    {opcion.descripcion_opcion}
-                                                                </label>
-                                                                {isVerified && (
-                                                                    <span className="ml-2">
-                                                                    {selectedAnswers[questionKey]?.opcion === opcion.opcion && verificationStatus[questionKey] === true && (
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-500" viewBox="0 0 20 20" fill="currentColor">
-                                                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                                                        </svg>
-                                                                    )}
-                                                                    {selectedAnswers[questionKey]?.opcion === opcion.opcion && verificationStatus[questionKey] === false && (
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                                                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                                                                        </svg>
-                                                                    )}
-                                                                    </span>
-                                                                )}
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
+                            {/* Encabezado */}
+                            {current.encabezado && (
+                            <div className="border-l-4 border-purple-600 pl-4 mb-5">
+                                <p className="text-gray-300 text-sm md:text-base">
+                                {current.encabezado}
+                                </p>
+                            </div>
+                            )}
+
+                            {/* Pregunta */}
+                            <h2
+                                className={`
+                                    font-bold text-white leading-snug mb-6
+                                    ${isApp 
+                                    ? "text-base md:text-lg" 
+                                    : "text-lg md:text-2xl"   
+                                    }
+                                `}
+                                >
+                                {current.pregunta?.pregunta}
+                            </h2>
+
+                            {/* Opciones */}
+                            <div className="space-y-3">
+                            {current.opciones?.map((opcion, idx) => {
+                                const letters = ["A", "B", "C", "D", "E"];
+                                const letter = letters[idx] || String(idx + 1);
+                                const selected = selectedAnswers[currentQuestionId]?.opcion === opcion.opcion;
+
+                                return (
+                                <button
+                                    key={idx}
+                                    type="button"
+                                    onClick={() => handleAnswerChange(currentQuestionId, opcion)}
+                                    className={[
+                                    "w-full text-left rounded-2xl border px-4 py-4 md:py-5 transition",
+                                    "flex items-center gap-4",
+                                    selected
+                                        ? "bg-purple-700/90 border-purple-500"
+                                        : "bg-gray-900 border-gray-700 hover:border-purple-600 hover:bg-gray-800/60"
+                                    ].join(" ")}
+                                >
+                                    <div
+                                    className={[
+                                        "w-10 h-10 rounded-full flex items-center justify-center font-bold",
+                                        selected ? "bg-white text-purple-700" : "bg-gray-800 text-gray-200 border border-gray-600"
+                                    ].join(" ")}
+                                    >
+                                    {letter}
                                     </div>
-                                </div>
-                            ))
+
+                                    <div className="flex-1">
+                                    <p className="text-gray-100 text-sm md:text-base">
+                                        {opcion.descripcion_opcion}
+                                    </p>
+                                    </div>
+                                </button>
+                                );
+                            })}
+                            
+                            {checked  && selectedOption && (
+                            <div className={`mt-4 rounded-xl border p-4 ${
+                                lastCheckResult ? "bg-green-900/20 border-green-700" : "bg-red-900/20 border-red-700"
+                            }`}>
+                                <p className={`font-bold ${lastCheckResult ? "text-green-300" : "text-red-300"}`}>
+                                {lastCheckResult ? "✅ Correcta" : "❌ Incorrecta"}
+                                </p>
+
+                                {selectedOption?.retroalimentacion && (
+                                <p className="text-gray-200 mt-2 text-sm leading-relaxed">
+                                    {selectedOption.retroalimentacion}
+                                </p>
+                                )}
+                            </div>
+                            )}
+                            </div>
+
+                            {/* Mensajes */}
+                            {(apiErrorMessage || validationMessage || error) && (
+                            <div className="mt-5 bg-red-800/60 border border-red-700 text-white p-3 rounded-xl text-center text-sm">
+                                {apiErrorMessage || validationMessage || error}
+                            </div>
+                            )}
+
+                            {/* Botones */}
+                            <div className="mt-8 flex items-center gap-4">
+                            <button
+                                type="button"
+                                onClick={handlePrev}
+                                disabled={currentIndex === 0}
+                                className={[
+                                "flex-1 py-3 rounded-xl font-semibold border transition",
+                                currentIndex === 0
+                                    ? "opacity-50 cursor-not-allowed border-gray-700 bg-gray-900 text-gray-400"
+                                    : "border-gray-700 bg-gray-900 hover:bg-gray-800 text-white"
+                                ].join(" ")}
+                            >
+                                Anterior
+                            </button>
+
+                            {/* Botón principal */}
+                            {!checked ? (
+                                <button
+                                type="button"
+                                onClick={handleCheck}
+                                disabled={!hasSelected}
+                                className={`flex-1 py-3 rounded-xl font-semibold text-white flex items-center justify-center gap-2
+                                    ${!hasSelected ? "opacity-50 cursor-not-allowed bg-purple-700" : "bg-purple-700 hover:bg-purple-800"}`}
+                                >
+                                Comprobar
+                                </button>
+                            ) : (
+                                <button
+                                type="button"
+                                onClick={handleContinue}
+                                disabled={!hasSelected}
+                                className={`flex-1 py-3 rounded-xl font-semibold text-white flex items-center justify-center gap-2
+                                    ${!hasSelected ? "opacity-50 cursor-not-allowed bg-purple-700" : "bg-purple-700 hover:bg-purple-800"}`}
+                                >
+                                Continuar <span className="text-lg">→</span>
+                                </button>
+                            )}
+                            </div>
+
+                        </div>
                         ) : (
-                            <p className="text-center text-gray-400 mt-4 text-sm">No se encontraron preguntas para esta convocatoria.</p>
+                        <p className="text-center text-gray-400 mt-6 text-sm">
+                            No se encontraron preguntas para esta convocatoria.
+                        </p>
                         )}
+
                         
                         {/* MODIFICACIÓN: Se elimina el `questionsArray.length > 0` para mostrar solo el mensaje */}
                         {!hasMoreQuestions && (
@@ -213,28 +370,8 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
                         {isLoading && questionsArray.length > 0 && (
                             <p className="text-center text-gray-400 text-sm mt-6">Cargando más preguntas...</p>
                         )}
+
                         
-                        {/* Se mantiene la sección de botones */}
-                        {hasMoreQuestions && !isLoading && (
-                            <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
-                                {isVerified ? (
-                                    <Button onClick={handleRetryClick} className="bg-orange-500 hover:bg-orange-600">
-                                        Reintentar
-                                    </Button>
-                                ) : (
-                                    <Button onClick={handleVerifyClick} disabled={Object.keys(selectedAnswers).length === 0}>
-                                        Verificar
-                                    </Button>
-                                )}
-                                <Button
-                                    onClick={handleLoadNextQuestions}
-                                    disabled={!allQuestionsAnswered}
-                                    className={`${!allQuestionsAnswered ? 'opacity-50 cursor-not-allowed' : 'hover:bg-purple-600'}`}
-                                >
-                                    Cargar Más Preguntas
-                                </Button>
-                            </div>
-                        )}
                     </>
                 )}
             </div>
