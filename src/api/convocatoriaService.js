@@ -43,6 +43,21 @@ const convocatoriaService = {
       console.error('getModulosByConvocatoria error:', error);
       return [];
     }
+  },
+  obtenerConvocatoriasPorUsuario: async (userId) => {
+
+    const queryParams = new URLSearchParams({
+        id_usuario: userId,
+      }).toString();
+
+    const response = await fetch(`${API_BASE_URL}/api/obtenerconvocatoriasporusuario?${queryParams}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+     
+    return await response.json();
   }
 };
 
