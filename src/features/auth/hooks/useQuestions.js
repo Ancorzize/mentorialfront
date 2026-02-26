@@ -23,6 +23,7 @@ const useQuestions = (convocatoriaId, userId, initialLastQuestionId, moduloId) =
       );
 
       if (data?.data && Array.isArray(data.data.data) && data.data.data.length > 0) {
+
         setQuestionsData(prevData => {
           if (cleanList) return data.data;
           if (!prevData) return data.data;
@@ -34,20 +35,36 @@ const useQuestions = (convocatoriaId, userId, initialLastQuestionId, moduloId) =
 
         setLastQuestionId(data.data.ultima_pregunta_enviada);
         setHasMoreQuestions(true);
-      } else {
-        setHasMoreQuestions(false);
-        if (data?.inactivo === true) setError(data.message);
-        else if (questionsData === null) setError('No se encontraron preguntas para esta convocatoria.');
+
+        return data.data; 
       }
+
+      setHasMoreQuestions(false);
+
+      if (cleanList) {
+        setQuestionsData(null);
+      }
+
+      if (data?.inactivo === true) {
+        setError(data.message);
+      }
+
+      return null;
+
     } catch (e) {
+
       setError('No se pudieron obtener las preguntas.');
       setHasMoreQuestions(false);
+
+      return null;
+
     } finally {
+
       setIsLoading(false);
+
     }
   };
 
-  // ✅ Reinicia cursor cuando cambia el "contexto" (convocatoria/módulo)
   useEffect(() => {
     firstLoad.current = true;
     setQuestionsData(null);
@@ -56,13 +73,12 @@ const useQuestions = (convocatoriaId, userId, initialLastQuestionId, moduloId) =
     setLastQuestionId(initialLastQuestionId ?? 0);
   }, [convocatoriaId, userId, moduloId, initialLastQuestionId]);
 
-  // ✅ dispara la primera carga
   useEffect(() => {
     if (convocatoriaId && userId && moduloId && firstLoad.current) {
       firstLoad.current = false;
       getQuestions(true);
     }
-  }, [convocatoriaId, userId, moduloId]); // (no incluyo lastQuestionId para evitar loops)
+  }, [convocatoriaId, userId, moduloId]); 
 
   return { questionsData, isLoading, error, hasMoreQuestions, getQuestions };
 };

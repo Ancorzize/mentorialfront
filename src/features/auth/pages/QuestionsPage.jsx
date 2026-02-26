@@ -39,6 +39,7 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
         setApiErrorMessage(null);
         setValidationMessage(null);
     }, [selectedConvocatoria?.id, selectedConvocatoria?.moduloId]);
+    
 
     const flatQuestions = useMemo(() => {
         return (questionsArray || []).flatMap((item) => {
@@ -53,6 +54,12 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
             }));
         });
     }, [questionsArray]);
+
+    useEffect(() => {
+        if (!isLoading && !hasMoreQuestions && flatQuestions.length === 0) {
+            setCurrentIndex(-1);
+        }
+    }, [isLoading, hasMoreQuestions, flatQuestions.length]);
 
      const buildSummary = () => {
         return flatQuestions.map((q) => {
@@ -73,6 +80,7 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
     };
 
     const current = flatQuestions[currentIndex];
+    const finishedAllQuestions = currentIndex === -1;
     const totalLoaded = flatQuestions.length;
     const isLast = currentIndex === totalLoaded - 1;
     const currentQuestionId = current?.pregunta?.id_pregunta;
@@ -155,7 +163,7 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
         setTotalAnsweredGlobal(prev => prev + answersToSubmit.length);
 
         const newQuestions = await getQuestions(true);
-
+        console.log('preguntas: ');console.log(newQuestions);
         if (!newQuestions || newQuestions.data?.length === 0) {
             setSelectedAnswers({});
             setCurrentIndex(-1);
@@ -205,7 +213,13 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
                     </div>
                 )}
 
-                {questionsData && (
+                {finishedAllQuestions ? (
+                    <div className="text-center py-10">
+                        <p className="text-gray-400 text-lg font-semibold">
+                            🎉 Has llegado al final. No hay más preguntas.
+                        </p>
+                    </div>
+                ) : questionsData ? (
                     <>
                     {!isApp && (
                     <>
@@ -365,18 +379,13 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
                         )}
 
                         
-                        {/* MODIFICACIÓN: Se elimina el `questionsArray.length > 0` para mostrar solo el mensaje */}
-                        {!hasMoreQuestions && (
-                            <p className="text-center text-gray-400 mt-6 text-sm">Has llegado al final. No hay más preguntas.</p>
-                        )}
-
                         {isLoading && questionsArray.length > 0 && (
                             <p className="text-center text-gray-400 text-sm mt-6">Cargando más preguntas...</p>
                         )}
 
                         
                     </>
-                )}
+                ):null}
             </div>
         </div>
     );
