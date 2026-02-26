@@ -132,19 +132,19 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
         const answersToSubmit = summary
             .filter(x => x.selected)
             .map(x => ({
-            id_pregunta: x.id_pregunta,
-            id_usuario: user.id,
-            opcion: x.selected.opcion,
-            descripcion_opcion: x.selected.descripcion_opcion,
-            correcta: x.selected.correcta,
-            id_modulo: x.idModulo
+                id_pregunta: x.id_pregunta,
+                id_usuario: user.id,
+                opcion: x.selected.opcion,
+                descripcion_opcion: x.selected.descripcion_opcion,
+                correcta: x.selected.correcta,
+                id_modulo: x.idModulo
             }));
 
         if (answersToSubmit.length === 0) {
             setValidationMessage("No hay respuestas para enviar.");
             return;
         }
-   
+
         const result = await preguntaService.submitAnswers(answersToSubmit);
 
         if (!result.success) {
@@ -152,18 +152,21 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
             return;
         }
 
-        // ✅ Progreso global (usa lo que realmente enviaste)
         setTotalAnsweredGlobal(prev => prev + answersToSubmit.length);
 
-        // ✅ continuar normal: cargar siguiente bloque
-        getQuestions(true);
+        const newQuestions = await getQuestions(true);
 
-        // ✅ reset UI
+        if (!newQuestions || newQuestions.data?.length === 0) {
+            setSelectedAnswers({});
+            setCurrentIndex(-1);
+            return;
+        }
+
         setSelectedAnswers({});
         setCurrentIndex(0);
         setChecked(false);
         setLastCheckResult(null);
-        };
+    };
 
 
 

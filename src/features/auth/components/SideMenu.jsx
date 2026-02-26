@@ -9,7 +9,7 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
           {isOpen ? '⮜' : '⮞'}
         </button>
       </div>
-
+      {/* ELIMNINAR 
       <ul className="mt-4 space-y-2 px-2">
         <li onClick={() => onSelect('password')} className="cursor-pointer bg-gray-800 hover:bg-gray-700 transition rounded-lg p-3 text-sm flex items-center gap-3">
           <LockClosedIcon className="h-6 w-6 text-purple-400" />
@@ -25,7 +25,7 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
           <Cog6ToothIcon className="h-6 w-6 text-purple-400" />
           {isOpen && 'Ajustes'}
         </li>
-      </ul>
+      </ul>*/}
     </aside>
   );
 };
