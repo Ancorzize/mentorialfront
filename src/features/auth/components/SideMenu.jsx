@@ -2,31 +2,86 @@ import { Cog6ToothIcon, LockClosedIcon, ChartBarIcon } from '@heroicons/react/24
 
 const SideMenu = ({ isOpen, onToggle, onSelect }) => {
   return (
-    <aside className={`fixed top-0 left-0 h-screen bg-gray-900 text-white shadow-lg z-40 transition-all duration-300 ${isOpen ? 'w-64' : 'w-16'}`}>
-      <div className="flex items-center justify-between p-4 border-b border-gray-800">
-        {isOpen && <h2 className="text-lg font-bold text-purple-400">Configuración</h2>}
-        <button onClick={onToggle} className="text-gray-300 hover:text-white transition">
-          {isOpen ? '⮜' : '⮞'}
-        </button>
-      </div>
-      {/* ELIMNINAR 
-      <ul className="mt-4 space-y-2 px-2">
-        <li onClick={() => onSelect('password')} className="cursor-pointer bg-gray-800 hover:bg-gray-700 transition rounded-lg p-3 text-sm flex items-center gap-3">
-          <LockClosedIcon className="h-6 w-6 text-purple-400" />
-          {isOpen && 'Cambio de contraseña'}
-        </li>
+    <>
+      {/* Botón flotante SIEMPRE visible */}
+      <button
+        onClick={onToggle}
+        className="
+          fixed
+          top-4
+          left-4
+          z-50
+          bg-gray-800 hover:bg-purple-600
+          text-white
+          w-10 h-10
+          rounded-full
+          flex items-center justify-center
+          shadow-lg
+          transition
+        "
+      >
+        {isOpen ? "⮜" : "⮞"}
+      </button>
 
-        <li onClick={() => onSelect('mis-simulacros')} className="cursor-pointer bg-gray-800 hover:bg-gray-700 transition rounded-lg p-3 text-sm flex items-center gap-3">
-          <ChartBarIcon className="h-6 w-6 text-purple-400" />
-          {isOpen && 'Mis simulacros'}
-        </li>
+      {/* Overlay oscuro */}
+      {isOpen && (
+        <div
+          onClick={onToggle}
+          className="fixed inset-0 bg-black/50 z-40"
+        />
+      )}
 
-        <li onClick={() => onSelect('settings')} className="cursor-pointer bg-gray-800 hover:bg-gray-700 transition rounded-lg p-3 text-sm flex items-center gap-3">
-          <Cog6ToothIcon className="h-6 w-6 text-purple-400" />
-          {isOpen && 'Ajustes'}
-        </li>
-      </ul>*/}
-    </aside>
+      {/* Menú lateral deslizante */}
+      <aside
+        className={`
+          fixed
+          top-0
+          left-0
+          h-[100dvh]
+          w-64
+          bg-gray-900
+          text-white
+          shadow-xl
+          z-50
+          transform
+          transition-transform duration-300
+
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        `}
+      >
+        <div className="p-4 mt-14">
+
+          <ul className="space-y-3">
+
+            <li
+              onClick={() => onSelect('password')}
+              className="cursor-pointer bg-gray-800 hover:bg-gray-700 transition rounded-lg p-3 text-sm flex items-center gap-3"
+            >
+              <LockClosedIcon className="h-6 w-6 text-purple-400" />
+              Cambio de contraseña
+            </li>
+
+            <li
+              onClick={() => onSelect('mis-simulacros')}
+              className="cursor-pointer bg-gray-800 hover:bg-gray-700 transition rounded-lg p-3 text-sm flex items-center gap-3"
+            >
+              <ChartBarIcon className="h-6 w-6 text-purple-400" />
+              Mis simulacros
+            </li>
+
+            <li
+              onClick={() => onSelect('settings')}
+              className="cursor-pointer bg-gray-800 hover:bg-gray-700 transition rounded-lg p-3 text-sm flex items-center gap-3"
+            >
+              <Cog6ToothIcon className="h-6 w-6 text-purple-400" />
+              Ajustes
+            </li>
+
+          </ul>
+
+        </div>
+      </aside>
+    </>
   );
 };
 
