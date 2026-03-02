@@ -29,6 +29,7 @@ const HomePage = ({ user, onLogout, onConvocatoriaSelect }) => {
   const [modulosMessage, setModulosMessage] = useState('');
 
   const handleMenuSelect = (option) => {
+    setViewMode(null);
     setMenuOption(option);
   };
 
@@ -103,241 +104,136 @@ const HomePage = ({ user, onLogout, onConvocatoriaSelect }) => {
       return <HistoryPage user={user} />;
     }
 
-    return (
-      <>
+    if (viewMode === 'search' || viewMode === null) {
+    
+      return (
+        <>
 
-        {/* Título */}
-        <div className="
-          w-full
-          max-w-2xl
-          text-center
-          mb-4 sm:mb-6
-          px-2 sm:px-0
-        ">
-
-          <h2 className="
-            text-lg
-            sm:text-xl
-            md:text-3xl
-            font-bold
-            mb-2
-            leading-tight
-          ">
-            Prepárate con MentorialPRO
-          </h2>
-
-          <p className="
-            text-xs
-            sm:text-sm
-            md:text-base
-            text-gray-400
-          ">
-            Busca y encuentra las convocatorias de tu interés.
-          </p>
-
-        </div>
-
-
-        {/* Buscador */}
-        <form
-          onSubmit={handleSubmit}
-          className="
+          {/* Título */}
+          <div className="
             w-full
             max-w-2xl
+            text-center
             mb-4 sm:mb-6
-            flex flex-col
-            sm:flex-row
-            gap-2 sm:gap-3
-          "
-        >
+            px-2 sm:px-0
+          ">
 
-          <div className="flex-grow w-full">
+            <h2 className="
+              text-lg
+              sm:text-xl
+              md:text-3xl
+              font-bold
+              mb-2
+              leading-tight
+            ">
+              Prepárate con MentorialPRO
+            </h2>
 
             <p className="
               text-xs
               sm:text-sm
-              font-medium
+              md:text-base
               text-gray-400
-              mb-1 sm:mb-2
             ">
-              Nombre de la convocatoria
+              Busca y encuentra las convocatorias de tu interés.
             </p>
-
-            <Input
-              type="text"
-              placeholder="Buscar convocatorias..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="mb-0"
-            />
 
           </div>
 
-          <div className="w-full sm:w-auto sm:self-end">
 
-            <Button
-              disabled={isLoading}
-              type="submit"
-              className="min-h-[44px] w-full sm:w-auto"
-            >
-              {isLoading ? 'Buscando...' : 'Buscar'}
-            </Button>
+          {/* Buscador */}
+          <form
+            onSubmit={handleSubmit}
+            className="
+              w-full
+              max-w-2xl
+              mb-4 sm:mb-6
+              flex flex-col
+              sm:flex-row
+              gap-2 sm:gap-3
+            "
+          >
 
-          </div>
+            <div className="flex-grow w-full">
 
-        </form>
-
-
-        {/* Resultados */}
-        <div className="w-full max-w-2xl">
-
-          {isLoading && (
-            <p className="text-center text-gray-400 text-sm">
-              Cargando...
-            </p>
-          )}
-
-          {message && (
-            <p className="text-center text-red-400 text-sm">
-              {message}
-            </p>
-          )}
-
-
-          {/* Lista convocatorias */}
-          {!selectedConvocatoria && searchResults.length > 0 && (
-
-            <div className="
-              bg-gray-900
-              rounded-lg
-              p-4 sm:p-6
-              shadow-lg
-            ">
-
-              <h3 className="
-                text-base
-                sm:text-lg
-                md:text-xl
-                font-bold
-                mb-4
+              <p className="
+                text-xs
+                sm:text-sm
+                font-medium
+                text-gray-400
+                mb-1 sm:mb-2
               ">
-                Resultados de la búsqueda
-              </h3>
+                Nombre de la convocatoria
+              </p>
 
-              <ul className="space-y-3 sm:space-y-4">
-
-                {searchResults.map((c) => (
-
-                  <li
-                    key={c.id}
-                    onClick={() => handleConvocatoriaClick(c)}
-                    className="
-                      bg-gray-800
-                      p-3 sm:p-4
-                      rounded-lg
-                      cursor-pointer
-                      active:bg-gray-700
-                      sm:hover:bg-gray-700
-                      transition
-                      min-h-[44px]
-                      flex flex-col justify-center
-                    "
-                  >
-
-                    <p className="text-purple-400 font-bold text-sm sm:text-base">
-                      {c.codigo}
-                    </p>
-
-                    <p className="text-gray-300 text-xs sm:text-sm">
-                      {c.nombre}
-                    </p>
-
-                  </li>
-
-                ))}
-
-              </ul>
+              <Input
+                type="text"
+                placeholder="Buscar convocatorias..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="mb-0"
+              />
 
             </div>
 
-          )}
+            <div className="w-full sm:w-auto sm:self-end">
+
+              <Button
+                disabled={isLoading}
+                type="submit"
+                className="min-h-[44px] w-full sm:w-auto"
+              >
+                {isLoading ? 'Buscando...' : 'Buscar'}
+              </Button>
+
+            </div>
+
+          </form>
 
 
-          {/* Módulos */}
-          {selectedConvocatoria && (
+          {/* Resultados */}
+          <div className="w-full max-w-2xl">
 
-            <div className="
-              bg-gray-900
-              rounded-lg
-              p-4 sm:p-6
-              shadow-lg
-            ">
+            {isLoading && (
+              <p className="text-center text-gray-400 text-sm">
+                Cargando...
+              </p>
+            )}
 
-              <div className="flex justify-between items-center mb-4 gap-3">
-
-                <div>
-
-                  <p className="text-purple-400 font-bold text-sm sm:text-base">
-                    {selectedConvocatoria.codigo}
-                  </p>
-
-                  <p className="text-gray-300 text-xs sm:text-sm">
-                    {selectedConvocatoria.nombre}
-                  </p>
-
-                </div>
-
-                <button
-                  onClick={handleBackToResults}
-                  className="
-                    bg-gray-700
-                    active:bg-gray-600
-                    sm:hover:bg-gray-600
-                    px-3 py-2
-                    rounded-lg
-                    text-xs sm:text-sm
-                    min-h-[44px]
-                  "
-                >
-                  Volver
-                </button>
-
-              </div>
+            {message && (
+              <p className="text-center text-red-400 text-sm">
+                {message}
+              </p>
+            )}
 
 
-              <h3 className="
-                text-base
-                sm:text-lg
-                md:text-xl
-                font-bold
-                mb-4
+            {/* Lista convocatorias */}
+            {!selectedConvocatoria && searchResults.length > 0 && (
+
+              <div className="
+                bg-gray-900
+                rounded-lg
+                p-4 sm:p-6
+                shadow-lg
               ">
-                Selecciona un módulo
-              </h3>
 
+                <h3 className="
+                  text-base
+                  sm:text-lg
+                  md:text-xl
+                  font-bold
+                  mb-4
+                ">
+                  Resultados de la búsqueda
+                </h3>
 
-              {isLoadingModulos && (
-                <p className="text-gray-400 text-center text-sm">
-                  Cargando módulos...
-                </p>
-              )}
+                <ul className="space-y-3 sm:space-y-4">
 
-              {!isLoadingModulos && modulosMessage && (
-                <p className="text-gray-400 text-center text-sm">
-                  {modulosMessage}
-                </p>
-              )}
-
-
-              {!isLoadingModulos && modulos.length > 0 && (
-
-                <ul className="space-y-3">
-
-                  {modulos.map((m) => (
+                  {searchResults.map((c) => (
 
                     <li
-                      key={m.id}
-                      onClick={() => handleModuloClick(m)}
+                      key={c.id}
+                      onClick={() => handleConvocatoriaClick(c)}
                       className="
                         bg-gray-800
                         p-3 sm:p-4
@@ -347,27 +243,135 @@ const HomePage = ({ user, onLogout, onConvocatoriaSelect }) => {
                         sm:hover:bg-gray-700
                         transition
                         min-h-[44px]
-                        flex items-center
-                        text-sm sm:text-base
+                        flex flex-col justify-center
                       "
                     >
-                      {m.nombre}
+
+                      <p className="text-purple-400 font-bold text-sm sm:text-base">
+                        {c.codigo}
+                      </p>
+
+                      <p className="text-gray-300 text-xs sm:text-sm">
+                        {c.nombre}
+                      </p>
+
                     </li>
 
                   ))}
 
                 </ul>
 
-              )}
+              </div>
 
-            </div>
+            )}
 
-          )}
 
-        </div>
+            {/* Módulos */}
+            {selectedConvocatoria && (
 
-      </>
-    );
+              <div className="
+                bg-gray-900
+                rounded-lg
+                p-4 sm:p-6
+                shadow-lg
+              ">
+
+                <div className="flex justify-between items-center mb-4 gap-3">
+
+                  <div>
+
+                    <p className="text-purple-400 font-bold text-sm sm:text-base">
+                      {selectedConvocatoria.codigo}
+                    </p>
+
+                    <p className="text-gray-300 text-xs sm:text-sm">
+                      {selectedConvocatoria.nombre}
+                    </p>
+
+                  </div>
+
+                  <button
+                    onClick={handleBackToResults}
+                    className="
+                      bg-gray-700
+                      active:bg-gray-600
+                      sm:hover:bg-gray-600
+                      px-3 py-2
+                      rounded-lg
+                      text-xs sm:text-sm
+                      min-h-[44px]
+                    "
+                  >
+                    Volver
+                  </button>
+
+                </div>
+
+
+                <h3 className="
+                  text-base
+                  sm:text-lg
+                  md:text-xl
+                  font-bold
+                  mb-4
+                ">
+                  Selecciona un módulo
+                </h3>
+
+
+                {isLoadingModulos && (
+                  <p className="text-gray-400 text-center text-sm">
+                    Cargando módulos...
+                  </p>
+                )}
+
+                {!isLoadingModulos && modulosMessage && (
+                  <p className="text-gray-400 text-center text-sm">
+                    {modulosMessage}
+                  </p>
+                )}
+
+
+                {!isLoadingModulos && modulos.length > 0 && (
+
+                  <ul className="space-y-3">
+
+                    {modulos.map((m) => (
+
+                      <li
+                        key={m.id}
+                        onClick={() => handleModuloClick(m)}
+                        className="
+                          bg-gray-800
+                          p-3 sm:p-4
+                          rounded-lg
+                          cursor-pointer
+                          active:bg-gray-700
+                          sm:hover:bg-gray-700
+                          transition
+                          min-h-[44px]
+                          flex items-center
+                          text-sm sm:text-base
+                        "
+                      >
+                        {m.nombre}
+                      </li>
+
+                    ))}
+
+                  </ul>
+
+                )}
+
+              </div>
+
+            )}
+
+          </div>
+
+        </>
+      );
+    }
   };
 
 
@@ -421,7 +425,10 @@ const HomePage = ({ user, onLogout, onConvocatoriaSelect }) => {
 
             {/* Buscar */}
             <button
-              onClick={() => setViewMode('search')}
+              onClick={() => {
+                setMenuOption(null);
+                setViewMode('search');
+              }}
               className={`
                 flex items-center justify-center gap-2
                 flex-1 sm:flex-none
@@ -445,7 +452,10 @@ const HomePage = ({ user, onLogout, onConvocatoriaSelect }) => {
 
             {/* Histórico */}
             <button
-              onClick={() => setViewMode('history')}
+             onClick={() => {
+              setMenuOption(null);
+              setViewMode('history');
+            }}
               className={`
                 flex items-center justify-center gap-2
                 flex-1 sm:flex-none

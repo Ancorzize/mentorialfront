@@ -7,6 +7,20 @@ import {
 } from '@heroicons/react/24/solid';
 
 const SideMenu = ({ isOpen, onToggle, onSelect }) => {
+
+  // Detectar si es móvil
+  const isMobile = () => window.innerWidth < 768;
+
+  // Manejar selección
+  const handleSelect = (option) => {
+    onSelect(option);
+
+    // SOLO en móvil se comprime automáticamente
+    if (isMobile()) {
+      onToggle();
+    }
+  };
+
   return (
     <>
       {/* Botón flotante SIEMPRE visible */}
@@ -24,13 +38,15 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
           flex items-center justify-center
           shadow-lg
           transition
-          h-6 w-6 transition-transform duration-300
+          transition-transform duration-300
           md:hidden
         "
-      >{isOpen
-        ? <ChevronLeftIcon className="h-6 w-6" />
-        : <ChevronRightIcon className="h-6 w-6" />
-      }</button>
+      >
+        {isOpen
+          ? <ChevronLeftIcon className="h-6 w-6" />
+          : <ChevronRightIcon className="h-6 w-6" />
+        }
+      </button>
 
       {/* Overlay oscuro */}
       {isOpen && (
@@ -64,7 +80,7 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
           <ul className="space-y-3">
 
             <li
-              onClick={() => onSelect('password')}
+              onClick={() => handleSelect('password')}
               className="cursor-pointer bg-gray-800 hover:bg-gray-700 transition rounded-lg p-3 text-sm flex items-center gap-3"
             >
               <LockClosedIcon className="h-6 w-6 text-purple-400" />
@@ -72,7 +88,7 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
             </li>
 
             <li
-              onClick={() => onSelect('mis-simulacros')}
+              onClick={() => handleSelect('mis-simulacros')}
               className="cursor-pointer bg-gray-800 hover:bg-gray-700 transition rounded-lg p-3 text-sm flex items-center gap-3"
             >
               <ChartBarIcon className="h-6 w-6 text-purple-400" />
@@ -80,7 +96,7 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
             </li>
 
             <li
-              onClick={() => onSelect('settings')}
+              onClick={() => handleSelect('settings')}
               className="cursor-pointer bg-gray-800 hover:bg-gray-700 transition rounded-lg p-3 text-sm flex items-center gap-3"
             >
               <Cog6ToothIcon className="h-6 w-6 text-purple-400" />
