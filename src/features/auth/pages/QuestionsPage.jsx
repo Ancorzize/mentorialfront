@@ -4,6 +4,7 @@ import useQuestions from '../hooks/useQuestions';
 import preguntaService from '../../../api/preguntaService'; 
 import { Capacitor } from '@capacitor/core';
 
+
 const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack }) => {
     
     const { questionsData, isLoading, error, hasMoreQuestions, getQuestions } =
@@ -18,8 +19,28 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
     const [apiErrorMessage, setApiErrorMessage] = useState(null);
     const [validationMessage, setValidationMessage] = useState(null);
     const [isApp, setIsApp] = useState(false);
+    const [inactiveUser, setInactiveUser] = useState(false);
+    const [inactiveMessage, setInactiveMessage] = useState("");
 
     const questionsArray = questionsData?.data || [];
+    console.log("questionsData completo:", questionsData);
+console.log("questionsData.inactivo:", questionsData?.inactivo);
+console.log("questionsData.message:", questionsData?.message);
+    useEffect(() => {
+
+        if (questionsData?.inactivo) {
+
+            setInactiveUser(true);
+            setInactiveMessage(
+                questionsData.message ||
+                "Ha alcanzado el límite gratuito."
+            );
+
+            setCurrentIndex(-1);
+
+        }
+
+    }, [questionsData]);
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [checked, setChecked] = useState(false);
@@ -253,6 +274,63 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
             {/* CONTENEDOR */}
             <div className="w-full max-w-4xl bg-gray-900 rounded-lg p-3 md:p-6">
 
+            {inactiveUser && (
+                <div className="text-center py-10">
+                    <p className="text-red-400 font-bold mb-4">
+                        {inactiveMessage}
+                    </p>
+                    <div className="flex justify-center mt-6">
+
+                        <button
+                            onClick={() => {
+
+                                const numero = "573105431968";
+                                const mensaje = "Hola, quiero activar mi convocatoria";
+
+                                if (Capacitor.isNativePlatform()) {
+
+                                    window.location.href =
+                                        `whatsapp://send?phone=${numero}&text=${encodeURIComponent(mensaje)}`;
+
+                                } else {
+                                    window.open(
+                                        `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`,
+                                        "_blank"
+                                    );
+
+                                }
+
+                            }}
+                            className="
+                                flex items-center gap-3
+                                bg-[#25D366] hover:bg-[#1ebe5d]
+                                text-white
+                                px-6 py-3
+                                rounded-lg
+                                font-bold
+                                transition
+                                shadow-lg
+                            "
+                        >
+
+                            {/* Icono WhatsApp */}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 32 32"
+                                className="w-5 h-5 fill-white"
+                            >
+                                <path d="M16.002 3C9.383 3 4 8.383 4 15.002c0 2.648.865 5.09 2.329 7.072L4 29l7.146-2.296a11.937 11.937 0 004.856 1.02h.001C22.617 27.724 28 22.34 28 15.724S22.617 3 16.002 3zm0 21.897a9.85 9.85 0 01-5.018-1.37l-.359-.214-4.243 1.365 1.386-4.135-.233-.377a9.836 9.836 0 01-1.504-5.264c0-5.438 4.424-9.861 9.861-9.861s9.861 4.423 9.861 9.861-4.424 9.861-9.861 9.861z"/>
+                            </svg>
+
+                            Activar convocatoria
+
+                        </button>
+
+                    </div>
+
+                </div>
+            )}
+
                 {/* TITULOS */}
                 {!isApp && (
                     <>
@@ -267,7 +345,7 @@ const QuestionsPage = ({ user, onLogout, selectedConvocatoria, onNavigateBack })
                 )}
 
                 {/* PREGUNTA */}
-                {current && (
+                {current && !inactiveUser && (
 
                     <div className="border border-gray-800 rounded-xl p-3 md:p-6">
 

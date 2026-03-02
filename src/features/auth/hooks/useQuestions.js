@@ -11,58 +11,93 @@ const useQuestions = (convocatoriaId, userId, initialLastQuestionId, moduloId) =
   const firstLoad = useRef(true);
 
   const getQuestions = async (cleanList = false) => {
+
     setIsLoading(true);
     setError(null);
 
     try {
-      const data = await preguntaService.getQuestions(
+
+      const response = await preguntaService.getQuestions(
         convocatoriaId,
         userId,
         lastQuestionId,
         moduloId
       );
 
-      if (data?.data && Array.isArray(data.data.data) && data.data.data.length > 0) {
+      console.log("Respuesta API preguntas:", response);
 
-        setQuestionsData(prevData => {
-          if (cleanList) return data.data;
-          if (!prevData) return data.data;
+      // ✅ CASO USUARIO INACTIVO (GUARDAR RESPUESTA COMPLETA)
+      if (response?.inactivo === true) {
 
-          const newData = { ...prevData };
-          newData.data = [...prevData.data, ...data.data.data];
-          return newData;
-        });
+        setQuestionsData(response); // 🔥 ESTA ES LA CLAVE
 
-        setLastQuestionId(data.data.ultima_pregunta_enviada);
-        setHasMoreQuestions(true);
+        setHasMoreQuestions(false);
 
-        return data.data; 
+        setError(response.message);
+
+        return response;
       }
 
+      // ✅ CASO NORMAL CON PREGUNTAS
+      if (
+        response?.data &&
+        Array.isArray(response.data.data) &&
+        response.data.data.length > 0
+      ) {
+
+        setQuestionsData(prevData => {
+
+          if (cleanList) return response.data;
+
+          if (!prevData) return response.data;
+
+          return {
+            ...prevData,
+            data: [
+              ...prevData.data,
+              ...response.data.data
+            ]
+          };
+
+        });
+
+        setLastQuestionId(response.data.ultima_pregunta_enviada);
+
+        setHasMoreQuestions(true);
+
+        return response.data;
+      }
+
+      // ✅ CASO SIN MÁS PREGUNTAS
       setHasMoreQuestions(false);
 
       if (cleanList) {
-        setQuestionsData(null);
+        setQuestionsData({
+          data: [],
+          message: "No hay más preguntas disponibles"
+        });
       }
 
-      if (data?.inactivo === true) {
-        setError(data.message);
-      }
+      return response;
 
-      return null;
+    }
+    catch (e) {
 
-    } catch (e) {
+      console.error(e);
 
       setError('No se pudieron obtener las preguntas.');
+
       setHasMoreQuestions(false);
 
       return null;
 
-    } finally {
+    }
+    finally {
 
       setIsLoading(false);
 
     }
+
   };
 
   useEffect(() => {
