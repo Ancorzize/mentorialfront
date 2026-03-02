@@ -1,4 +1,10 @@
-import { Cog6ToothIcon, LockClosedIcon, ChartBarIcon } from '@heroicons/react/24/solid';
+import {
+  Cog6ToothIcon,
+  LockClosedIcon,
+  ChartBarIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon
+} from '@heroicons/react/24/solid';
 
 const SideMenu = ({ isOpen, onToggle, onSelect }) => {
   return (
@@ -18,16 +24,19 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
           flex items-center justify-center
           shadow-lg
           transition
+          h-6 w-6 transition-transform duration-300
+          md:hidden
         "
-      >
-        {isOpen ? "⮜" : "⮞"}
-      </button>
+      >{isOpen
+        ? <ChevronLeftIcon className="h-6 w-6" />
+        : <ChevronRightIcon className="h-6 w-6" />
+      }</button>
 
       {/* Overlay oscuro */}
       {isOpen && (
         <div
           onClick={onToggle}
-          className="fixed inset-0 bg-black/50 z-40"
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
         />
       )}
 
@@ -47,6 +56,7 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
           transition-transform duration-300
 
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0
         `}
       >
         <div className="p-4 mt-14">
