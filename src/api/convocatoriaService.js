@@ -3,7 +3,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL
 const convocatoriaService = {
   search: async (searchTerm, userId) => {
     try {
-      // Usamos URLSearchParams para manejar correctamente los parámetros de la URL
+    
       const queryParams = new URLSearchParams({
         convocatoria: searchTerm,
         id_usuario: userId,
@@ -38,7 +38,7 @@ const convocatoriaService = {
       });
 
       if (!response.ok) throw new Error('Error al cargar módulos.');
-      return await response.json(); // esperado: array
+      return await response.json(); 
     } catch (error) {
       console.error('getModulosByConvocatoria error:', error);
       return [];

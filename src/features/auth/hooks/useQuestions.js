@@ -26,10 +26,9 @@ const useQuestions = (convocatoriaId, userId, initialLastQuestionId, moduloId) =
 
       console.log("Respuesta API preguntas:", response);
 
-      // ✅ CASO USUARIO INACTIVO (GUARDAR RESPUESTA COMPLETA)
       if (response?.inactivo === true) {
 
-        setQuestionsData(response); // 🔥 ESTA ES LA CLAVE
+        setQuestionsData(response);
 
         setHasMoreQuestions(false);
 
@@ -38,7 +37,6 @@ const useQuestions = (convocatoriaId, userId, initialLastQuestionId, moduloId) =
         return response;
       }
 
-      // ✅ CASO NORMAL CON PREGUNTAS
       if (
         response?.data &&
         Array.isArray(response.data.data) &&
@@ -68,7 +66,6 @@ const useQuestions = (convocatoriaId, userId, initialLastQuestionId, moduloId) =
         return response.data;
       }
 
-      // ✅ CASO SIN MÁS PREGUNTAS
       setHasMoreQuestions(false);
 
       if (cleanList) {

@@ -56,10 +56,10 @@ const LandingPage = ({ onLoginClick }) => {
 
     return (
         <div className="min-h-screen bg-dark-bg text-gray-200 font-sans">
-            {/* Encabezado y Navegación */}
+           
             <header className="bg-dark-card/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-700">
                 <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
-                    {/* Logo */}
+                 
                     <a href="#" className="flex items-center space-x-2 text-2xl font-bold text-white">
                         <span>
                            
@@ -68,7 +68,6 @@ const LandingPage = ({ onLoginClick }) => {
                         </span>
                     </a>
 
-                    {/* Menú de Navegación (Escritorio) */}
                     <ul className="hidden md:flex items-center space-x-8">
                         <li><a href="#inicio" className="text-gray-300 hover:text-purple-500 transition-colors">Inicio</a></li>
                         <li><a href="#cursos" className="text-gray-300 hover:text-purple-500 transition-colors">Simulacros</a></li>
@@ -79,7 +78,6 @@ const LandingPage = ({ onLoginClick }) => {
                         <li><a href="#contacto" className="text-gray-300 hover:text-purple-500 transition-colors">Contacto</a></li>
                     </ul>
 
-                    {/* Botones (Escritorio) */}
                     <div className="hidden md:flex items-center space-x-4">
                         <a 
                             href="https://github.com/ancorzize0250/MentorialAPKAndroid/releases/download/v1.0/mentorial.apk" 
@@ -99,13 +97,11 @@ const LandingPage = ({ onLoginClick }) => {
                         </button>
                     </div>
 
-                    {/* Botón de Menú (Móvil) */}
                     <button onClick={toggleMobileMenu} className="md:hidden text-white">
                         <Menu className="w-6 h-6" />
                     </button>
                 </nav>
 
-                {/* Menú de Navegación (Móvil) */}
                 <div className={`${isMobileMenuOpen ? 'flex' : 'hidden'} md:hidden flex-col items-center p-4 space-y-4 bg-dark-card border-t border-gray-700`}>
                     <ul className="flex flex-col items-center p-4 space-y-4 w-full">
                         <li><a href="#inicio" className="text-gray-300 hover:text-purple-500">Inicio</a></li>
@@ -141,9 +137,7 @@ const LandingPage = ({ onLoginClick }) => {
                 </div>
             </header>
 
-            {/* Contenido Principal */}
             <main>
-                {/* Sección de Inicio (Hero) */}
                 <section id="inicio" className="py-20 md:py-32">
                     <div className="container mx-auto px-6 text-center">
                         <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">Tu Futuro Profesional Comienza Aquí.</h1>
@@ -172,17 +166,16 @@ const LandingPage = ({ onLoginClick }) => {
                     </div>
                 </section>
 
-                {/* Sección de Cursos */}
                 <section id="cursos" className="py-20 bg-dark-card">
                     <div className="container mx-auto px-6">
                         <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">Simulacros Populares</h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {/* <-- Mapeo dinámico de las convocatorias */}
+                           
                             {convocatorias.length > 0 ? (
                                 convocatorias.map((convocatoria) => {
-                                // Validación adicional para asegurar que 'convocatoria' no es null o undefined
+                                
                                 if (!convocatoria) {
-                                    return null; // Si es nulo, no renderiza nada para este elemento
+                                    return null; 
                                 }
                                 
                                 return (
@@ -210,7 +203,6 @@ const LandingPage = ({ onLoginClick }) => {
                     </div>
                 </section>
                 
-                {/* Sección: Acerca de la App */}
                 <section id="acerca" className="py-20 bg-dark-card">
                     <div className="container mx-auto px-6">
                         <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">Acerca de la App</h2>
@@ -241,11 +233,10 @@ const LandingPage = ({ onLoginClick }) => {
                     </div>
                 </section>
                 
-                {/* Sección de Misión y Visión */}
                 <section id="mision" className="py-20 bg-dark-bg">
                     <div className="container mx-auto px-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                            {/* Misión */}
+                          
                             <div className="text-center md:text-left">
                                 <div className="flex justify-center md:justify-start mb-4">
                                     <div className="bg-purple-500/10 text-purple-500 p-4 rounded-full">
@@ -257,7 +248,7 @@ const LandingPage = ({ onLoginClick }) => {
                                     Brindar a los aspirantes a concursos de mérito en Colombia una plataforma web innovadora, accesible y confiable que ofrezca simulacros en línea de alta calidad, diseñados para fortalecer sus conocimientos, medir su nivel de preparación y aumentar sus posibilidades de éxito en procesos de entidades como la Fiscalía, la Contraloría, el SENA y demás instituciones públicas.
                                 </p>
                             </div>
-                            {/* Visión */}
+                         
                             <div id="vision" className="text-center md:text-left">
                                 <div className="flex justify-center md:justify-start mb-4">
                                     <div className="bg-purple-500/10 text-purple-500 p-4 rounded-full">
@@ -273,7 +264,6 @@ const LandingPage = ({ onLoginClick }) => {
                     </div>
                 </section>
                 
-                {/* Nueva Sección: Planes y Métodos de Pago */}
                 <section id="planes" className="py-20">
                     <div className="container mx-auto px-6 text-center">
                         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Planes y Métodos de Pago</h2>
@@ -323,7 +313,6 @@ const LandingPage = ({ onLoginClick }) => {
                     </div>
                 </section>
 
-                {/* Sección de Contacto */}
                 <section id="contacto" className="py-20 bg-dark-bg">
                     <div className="container mx-auto px-6">
                         <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-4">Ponte en Contacto</h2>
@@ -382,7 +371,6 @@ const LandingPage = ({ onLoginClick }) => {
                                 </div>
                             </form>
 
-                            {/* 👇 Feedback al usuario */}
                             {feedback && (
                                 <p className={`mt-4 text-center font-semibold ${feedback.type === "success" ? "text-green-400" : "text-red-400"}`}>
                                     {feedback.message}
@@ -393,7 +381,6 @@ const LandingPage = ({ onLoginClick }) => {
                 </section>
             </main>
 
-            {/* Pie de Página */}
             <footer className="bg-dark-bg border-t border-gray-700 py-12">
                 <div className="container mx-auto px-6 text-center">
                     <a href="#" className="flex items-center justify-center space-x-2 text-2xl font-bold text-white mb-0">

@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import authService from '../../../api/authService'; 
 
-/**
- * Hook para la lógica de inicio de sesión.
- * (Simulando features/auth/hooks/useLogin.js)
- */
+
 const useLogin = (onLoginSuccess) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

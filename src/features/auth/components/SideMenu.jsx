@@ -11,11 +11,9 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
   // Detectar si es móvil
   const isMobile = () => window.innerWidth < 768;
 
-  // Manejar selección
   const handleSelect = (option) => {
     onSelect(option);
 
-    // SOLO en móvil se comprime automáticamente
     if (isMobile()) {
       onToggle();
     }
@@ -23,7 +21,6 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
 
   return (
     <>
-      {/* Botón flotante SIEMPRE visible */}
       <button
         onClick={onToggle}
         className="
@@ -48,7 +45,6 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
         }
       </button>
 
-      {/* Overlay oscuro */}
       {isOpen && (
         <div
           onClick={onToggle}
@@ -56,7 +52,6 @@ const SideMenu = ({ isOpen, onToggle, onSelect }) => {
         />
       )}
 
-      {/* Menú lateral deslizante */}
       <aside
         className={`
           fixed

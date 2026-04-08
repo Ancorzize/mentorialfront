@@ -47,13 +47,11 @@ console.log("questionsData.message:", questionsData?.message);
     const [lastCheckResult, setLastCheckResult] = useState(null);
     const [totalAnsweredGlobal, setTotalAnsweredGlobal] = useState(0);
 
-    // detectar si es app
     useEffect(() => {
         const native = Capacitor.isNativePlatform();
         setIsApp(native);
     }, []);
 
-    // reset cuando cambia convocatoria
     useEffect(() => {
         setSelectedAnswers({});
         setCurrentIndex(0);
@@ -73,7 +71,6 @@ console.log("questionsData.message:", questionsData?.message);
         }));
     };
 
-    // flatten preguntas
     const flatQuestions = useMemo(() => {
 
         return (questionsArray || []).flatMap((item) => {
@@ -244,7 +241,6 @@ console.log("questionsData.message:", questionsData?.message);
 
         <div className="min-h-screen bg-gray-950 flex flex-col items-center p-2 md:p-4 text-white">
 
-            {/* HEADER */}
             <header className="w-full bg-gray-900 py-3 px-3 md:px-6 flex flex-col sm:flex-row items-center justify-between rounded-b-xl mb-4">
 
                 <h1 className="text-sm sm:text-base md:text-lg font-bold">
@@ -271,7 +267,6 @@ console.log("questionsData.message:", questionsData?.message);
 
             </header>
 
-            {/* CONTENEDOR */}
             <div className="w-full max-w-4xl bg-gray-900 rounded-lg p-3 md:p-6">
 
             {inactiveUser && (
@@ -313,7 +308,6 @@ console.log("questionsData.message:", questionsData?.message);
                             "
                         >
 
-                            {/* Icono WhatsApp */}
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 32 32"
@@ -331,7 +325,6 @@ console.log("questionsData.message:", questionsData?.message);
                 </div>
             )}
 
-                {/* TITULOS */}
                 {!isApp && (
                     <>
                         <h2 className="text-base sm:text-xl md:text-2xl font-bold text-center mb-1">
@@ -344,12 +337,10 @@ console.log("questionsData.message:", questionsData?.message);
                     </>
                 )}
 
-                {/* PREGUNTA */}
                 {current && !inactiveUser && (
 
                     <div className="border border-gray-800 rounded-xl p-3 md:p-6">
 
-                        {/* progreso */}
                         <div className="flex justify-between text-xs md:text-sm text-gray-400">
 
                             <span>
@@ -362,7 +353,6 @@ console.log("questionsData.message:", questionsData?.message);
 
                         </div>
 
-                        {/* barra */}
                         <div className="w-full h-2 bg-gray-800 rounded mt-2 mb-4">
 
                             <div
@@ -372,7 +362,6 @@ console.log("questionsData.message:", questionsData?.message);
 
                         </div>
 
-                        {/* ENCABEZADO */}
                         {current.encabezado && (
 
                             <div className="border-l-4 border-purple-600 pl-3 mb-4">
@@ -387,7 +376,6 @@ console.log("questionsData.message:", questionsData?.message);
 
                         )}
 
-                        {/* TEXTO PREGUNTA */}
                         <h2 className={`font-bold mb-5 leading-snug
                         
                             text-sm
@@ -401,7 +389,6 @@ console.log("questionsData.message:", questionsData?.message);
 
                         </h2>
 
-                        {/* OPCIONES */}
                         <div className="space-y-2">
 
                             {current.opciones.map((opcion, idx) => {
@@ -452,7 +439,6 @@ console.log("questionsData.message:", questionsData?.message);
 
                         </div>
 
-                        {/* RETROALIMENTACION */}
                         {checked && selectedOption && (
 
                             <div className={`mt-4 p-4 rounded-xl border
@@ -486,7 +472,6 @@ console.log("questionsData.message:", questionsData?.message);
 
                         )}
 
-                        {/* BOTONES */}
                         <div className="flex gap-2 mt-6">
 
                             <button

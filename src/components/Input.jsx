@@ -1,6 +1,4 @@
-/**
- * Componente de entrada de texto reutilizable.
- */
+
 const Input = ({ label, type, value, onChange, placeholder, className = 'mb-4' }) => (
   <div className={`${className}`}>
     <label className="block text-gray-400 text-sm font-bold mb-2">

@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
 
-// =================================================================
-// ARCHITECTURE: A SINGLE FILE MODULAR IMPLEMENTATION
-// This file mimics a modular architecture within a single file
-// by separating concerns into logical components and hooks.
-// =================================================================
 const API_BASE_URL = import.meta.env.VITE_API_URL
 
 const authService = {
@@ -24,7 +19,6 @@ const authService = {
         throw new Error(data.message || 'Error en el inicio de sesión.');
       }
 
-      // Devuelve la respuesta completa de la API, incluyendo el token o los datos del usuario
       return { success: true, user: data.usuario, token: data.token };
     } catch (error) {
       console.error('Login error:', error);

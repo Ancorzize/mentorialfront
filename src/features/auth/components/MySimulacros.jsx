@@ -40,7 +40,6 @@ const MySimulacros = ({ user }) => {
           className="bg-gray-900 p-5 rounded-xl shadow
                      grid grid-cols-1 md:grid-cols-3 gap-4"
         >
-          {/* Header */}
           <div className="md:col-span-3">
             <h3 className="text-purple-400 font-bold text-lg">
               {sim.codigo_convocatoria}

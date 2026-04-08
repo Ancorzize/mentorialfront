@@ -20,7 +20,6 @@ const preguntaService = {
         throw new Error(data.message || 'Error al obtener preguntas.');
       }
 
-      // Devuelve el objeto completo para que el componente acceda a los datos anidados
       return data;
     } catch (error) {
       console.error('Get questions error:', error);

@@ -8,9 +8,9 @@ import {
 } from 'recharts';
 
 const COLORS = {
-  correctas: '#22c55e',    // verde
-  incorrectas: '#ef4444',  // rojo
-  pendientes: '#facc15'    // amarillo
+  correctas: '#22c55e',   
+  incorrectas: '#ef4444',  
+  pendientes: '#facc15'    
 };
 
 const AvanceChart = ({ avance }) => {
@@ -60,7 +60,6 @@ const AvanceChart = ({ avance }) => {
           </PieChart>
         </ResponsiveContainer>
 
-        {/* Texto central */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-3xl font-bold text-white">
             {porcentaje}%
@@ -71,7 +70,6 @@ const AvanceChart = ({ avance }) => {
         </div>
       </div>
 
-      {/* Leyenda */}
       <div className="flex gap-4 mt-4 text-xs text-gray-300">
         <div className="flex items-center gap-1">
           <span

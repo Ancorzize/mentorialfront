@@ -1,5 +1,3 @@
-// src/components/ConvocatoriaDetail.jsx
-
 import React from 'react';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import Button from './Button'; 

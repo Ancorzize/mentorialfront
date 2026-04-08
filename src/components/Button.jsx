@@ -1,6 +1,4 @@
-/**
- * Componente de botón reutilizable.
- */
+
 export const Button = ({ children, onClick, disabled }) => (
   <button
     className={`w-full py-3 px-4 rounded-lg font-bold text-white transition duration-300 ${
