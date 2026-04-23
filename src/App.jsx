@@ -19,7 +19,7 @@ const App = () => {
 
     const handleLogout = () => {
         setUser(null);
-        setCurrentPage('landing'); // Al cerrar sesión, regresa a la página de inicio  landing  o login
+        setCurrentPage('landing');//Al cerrar sesión, regresa a la página de inicio  landing  o login
         setSelectedConvocatoria(null);
         setSuccessMessage(null);
     };
