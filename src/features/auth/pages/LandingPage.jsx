@@ -3,6 +3,7 @@ import { BookOpenCheck, DownloadCloud, Menu, Smartphone, Facebook, Twitter, Inst
 import { FaAndroid, FaWhatsapp } from "react-icons/fa";
 import sendContactEmail from '../../../api/sendContactEmailService';
 import getConvocatorias from '../../../api/getConvocatoriasService'; 
+import { registerVisitService } from '../../../api/analyticsService';
 
 const LandingPage = ({ onLoginClick }) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -26,6 +27,14 @@ const LandingPage = ({ onLoginClick }) => {
         };
 
         fetchConvocatorias();
+    }, []);
+
+    useEffect(() => {
+        const trackVisit = async () => {
+        await registerVisitService();
+        };
+
+        trackVisit();
     }, []);
 
     const toggleMobileMenu = () => {
